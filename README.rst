@@ -69,9 +69,10 @@ Usage Example
 
 .. code-block:: python
 
+    import board
     import cedargrove_ad5293
 
-    ad5293 = cedargrove_ad5245.AD5293()
+    ad5293 = cedargrove_ad5245.AD5293(select=board.D6)
 
     ad5293.wiper = 1023
     print("Wiper set to %d"%ad5293.wiper)
