@@ -1,16 +1,13 @@
 Introduction
 ============
 
-
-
-
 .. image:: https://img.shields.io/discord/327254708534116352.svg
     :target: https://adafru.it/discord
     :alt: Discord
 
 
-.. image:: https://github.com/CedarGroveStudios/Cedargrove_CircuitPython_AD5293/workflows/Build%20CI/badge.svg
-    :target: https://github.com/CedarGroveStudios/Cedargrove_CircuitPython_AD5293/actions
+.. image:: https://github.com/CedarGroveStudios/CircuitPython_AD5293/workflows/Build%20CI/badge.svg
+    :target: https://github.com/CedarGroveStudios/CircuitPython_AD5293/actions
     :alt: Build Status
 
 
@@ -20,47 +17,29 @@ Introduction
 
 A CircuitPython driver for the AD5293 digital potentiometer.
 
+The AD5293 Digital Potentiometer is an I2C, 100K-ohm device. The potentiometer
+sports 1024 resistance steps and can work with a logic power source from 2.7v
+to 5.5v. The potentiometer circuit can operate with analog supply voltages from
++/-9v to +/-16.5v. The pins act similarly to a passive resistive potentiometer,
+but require that voltages placed on any of the three pins not exceed the analog
+power supply voltage or drop below ground potential.
+
+The Cedar Grove AD5293 custom breakout board provides power and signal connections
+for SPI and the potentiometer chip. The AD5293 is also integrated with the
+AD9833-based Precision VCO Eurorack module.
+
 
 Dependencies
 =============
 This driver depends on:
 
 * `Adafruit CircuitPython <https://github.com/adafruit/circuitpython>`_
-* `Bus Device <https://github.com/adafruit/Adafruit_CircuitPython_BusDevice>`_
 
 Please ensure all dependencies are available on the CircuitPython filesystem.
 This is easily achieved by downloading
 `the Adafruit library and driver bundle <https://circuitpython.org/libraries>`_
 or individual libraries can be installed using
-`circup <https://github.com/adafruit/circup>`_.Installing from PyPI
-=====================
-.. note:: This library is not available on PyPI yet. Install documentation is included
-   as a standard element. Stay tuned for PyPI availability!
-
-.. todo:: Remove the above note if PyPI version is/will be available at time of release.
-
-On supported GNU/Linux systems like the Raspberry Pi, you can install the driver locally `from
-PyPI <https://pypi.org/project/Cedargrove-circuitpython-ad5293/>`_.
-To install for current user:
-
-.. code-block:: shell
-
-    pip3 install Cedargrove-circuitpython-ad5293
-
-To install system-wide (this may be required in some cases):
-
-.. code-block:: shell
-
-    sudo pip3 install Cedargrove-circuitpython-ad5293
-
-To install in a virtual environment in your current project:
-
-.. code-block:: shell
-
-    mkdir project-name && cd project-name
-    python3 -m venv .venv
-    source .env/bin/activate
-    pip3 install Cedargrove-circuitpython-ad5293
+`circup <https://github.com/adafruit/circup>`_.
 
 Installing to a Connected CircuitPython Device with Circup
 ==========================================================
@@ -88,12 +67,24 @@ Or the following command to update an existing version:
 Usage Example
 =============
 
-.. todo:: Add a quick, simple example. It and other examples should live in the
-examples folder and be included in docs/examples.rst.
+.. code-block:: python
+    import cedargrove_ad5293
+
+    ad5293 = cedargrove_ad5245.AD5293()
+
+    ad5293.wiper = 1023
+    print("Wiper set to %d"%ad5293.wiper)
+
+``ad5293_simpletest.py`` and other examples can be found in the ``examples`` folder.
+
 
 Documentation
 =============
-API documentation for this library can be found on `Read the Docs <https://circuitpython-ad5293.readthedocs.io/>`_.
+`AD5293 CircuitPython Driver API Class Description <https://github.com/CedarGroveStudios/CircuitPython_AD5293/blob/main/media/pseudo_readthedocs_cedargrove_ad5293.pdf>`_
+
+`CedarGrove AD5293 Breakout OSH Park Project <https://oshpark.com/shared_projects/WcYMJx7L>`_
+
+.. image:: https://github.com/CedarGroveStudios/CircuitPython_AD5293/blob/main/media/AD5293_breakout_for_fritzing.png
 
 For information on building library documentation, please check out
 `this guide <https://learn.adafruit.com/creating-and-sharing-a-circuitpython-library/sharing-our-docs-on-readthedocs#sphinx-5-1>`_.

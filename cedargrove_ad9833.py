@@ -1,11 +1,11 @@
-# SPDX-FileCopyrightText: Copyright (c) 2023 JG for Cedar Grove Maker Studios
+# SPDX-FileCopyrightText: Copyright (c) 2022 JG for Cedar Grove Maker Studios
 #
 # SPDX-License-Identifier: MIT
 """
-`cedargrove_ad5293`
+`cedargrove_ad9833`
 ================================================================================
 
-A CircuitPython driver for the AD5293 digital potentiometer.
+A CircuitPython driver for the AD9833 Programmable Waveform Generator.
 
 * Author(s): JG
 
@@ -14,14 +14,14 @@ Implementation Notes
 
 **Hardware:**
 
-* Cedar Grove Studios AD5293 breakout or equivalent
+* Cedar Grove Studios AD9833 Precision Waveform Generator FeatherWing
+* Cedar Grove Studios AD9833 ADSR Precision Waveform Generator FeatherWing
 
 **Software and Dependencies:**
 
 * Adafruit CircuitPython firmware for the supported boards:
   https://circuitpython.org/downloads
 
-* Adafruit's Bus Device library: https://github.com/adafruit/Adafruit_CircuitPython_BusDevice
 """
 
 import board
@@ -30,7 +30,7 @@ import digitalio
 from adafruit_bus_device.spi_device import SPIDevice
 
 __version__ = "0.0.0+auto.0"
-__repo__ = "https://github.com/CedarGroveStudios/Cedargrove_CircuitPython_AD5293.git"
+__repo__ = "https://github.com/CedarGroveStudios/CircuitPython_AD9833.git"
 
 
 # pylint: disable=too-many-instance-attributes
@@ -257,10 +257,10 @@ class AD9833:
 
     def _update_phase_register(self, new_phase, register=None):
         """Load inactive register with new phase value then set the
-        register active in order to avoid partial phase changes. Writes to
+        register active in order to to avoid partial phase changes. Writes to
         specified register if != None.
 
-        :param int new_phase: The new phase value.
+        :param int new_freq: The new phase value.
         :param union(int, None) register: The register for the new value; PHASE0
         or PHASE1. Selects the non-active register if register == None.
         """
