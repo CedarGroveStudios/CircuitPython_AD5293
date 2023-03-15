@@ -17,7 +17,7 @@ Introduction
 
 A CircuitPython driver for the AD5293 digital potentiometer.
 
-The AD5293 Digital Potentiometer is an I2C, 100K-ohm device. The potentiometer
+The AD5293 Digital Potentiometer is an SPI, 100K-ohm device. The potentiometer
 sports 1024 resistance steps and can work with a logic power source from 2.7v
 to 5.5v. The potentiometer circuit can operate with analog supply voltages from
 +/-9v to +/-16.5v. The pins act similarly to a passive resistive potentiometer,
