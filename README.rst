@@ -68,6 +68,7 @@ Usage Example
 =============
 
 .. code-block:: python
+
     import cedargrove_ad5293
 
     ad5293 = cedargrove_ad5245.AD5293()
