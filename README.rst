@@ -85,7 +85,7 @@ Documentation
 
 `CedarGrove AD5293 Breakout OSH Park Project <https://oshpark.com/shared_projects/WcYMJx7L>`_
 
-.. image:: https://github.com/CedarGroveStudios/CircuitPython_AD5293/blob/main/media/AD5293_breakout_for_fritzing.png
+.. image:: https://github.com/CedarGroveStudios/CircuitPython_AD5293/blob/main/media/AD5293_glamour.png
 
 For information on building library documentation, please check out
 `this guide <https://learn.adafruit.com/creating-and-sharing-a-circuitpython-library/sharing-our-docs-on-readthedocs#sphinx-5-1>`_.
