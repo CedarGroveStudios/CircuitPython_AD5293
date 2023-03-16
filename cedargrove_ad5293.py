@@ -33,6 +33,25 @@ __version__ = "0.0.0+auto.0"
 __repo__ = "https://github.com/CedarGroveStudios/Cedargrove_CircuitPython_AD5293.git"
 
 
+class CRC:
+    """Control Register Commands (bits 10-13)."""
+    NOP = 0x0  # NOP command. Do nothing.
+    WRITE_SRD_TO_RDAC = 0x1  # Write contents of serial register data to RDAC
+    READ_RDAC_FROM_SDO = 0x2  # Read RDAC wiper setting from SDO output in the next frame.
+    RESET = x4  # Reset. Refresh RDAC with midscale code.
+    WRITE_SRD_TO_CR = 0x6  # Write contents of serial register data to control register.
+    READ_CR_FROM_SDO = 0x7  # Read control register from SDO output in the next frame.
+    POWER_DOWN = 0x8  # Software power-down; D0 = 0 (normal mode); D0 = 1 (shutdown mode).
+
+
+class CRF:
+    """Control Register Function (bits 1-2)."""
+    RESISTOR = 0b0  # bit C2: Resistor performance mode (default)
+    NORMAL = 0b1  # bit C2: Normal mode.
+    RDAC_RO = 0b0  # bit C1: locks the wiper position through the digital interface (default)
+    RDAC_RW = 0b1  # bit C1: allows update of wiper position through digital interface.
+
+
 # pylint: disable=too-many-instance-attributes
 class AD5293:
     """Class representing the Cedar Grove AD5293, an SPI digital linear taper
@@ -57,14 +76,12 @@ class AD5293:
     ):
         """Initialize SPI bus interconnect, derive chip select pin (to allow
         multiple class instances), and create the SPIDevice instance. During
-        initialization, the generator is reset and placed in the pause state.
+        initialization, the potentiometer is reset and placed in the power-down state.
 
         :param board select: The AD5293 chip select pin designation. Defaults
         to board.D6.
         :param int wiper: The 10-bit potentiometer wiper integer value, range
-        from 0 to 1024 waveform frequency in Hz ranging from
-        0 to 2 ** 28. Defaults to 0.
-        """
+        from 0 to 1024. Defaults to 0."""
 
         self._spi = busio.SPI(board.SCK, MOSI=board.MOSI)  # Define SPI bus
         self._cs = digitalio.DigitalInOut(getattr(board, select))
@@ -80,17 +97,16 @@ class AD5293:
 
 
         # Initiate register pointers
-        self._freq_reg = 0  # FREQ0
-        self._phase_reg = 0  # PHASE0
+        self._serial_data_input = 0  # SDI
 
-        self._pause = True
+        self._power_down = False
         self._reset = True
 
         # Reset the device
         self.reset()
 
-        # Set the master clock frequency
-        self._m_clock = m_clock
+        # Enable register read-write
+        self._write_to_device(0, 0x)
 
     @property
     def wiper(self):
