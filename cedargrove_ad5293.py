@@ -24,6 +24,7 @@ Implementation Notes
 * Adafruit's Bus Device library: https://github.com/adafruit/Adafruit_CircuitPython_BusDevice
 """
 
+import time
 import board
 import busio
 import digitalio
@@ -66,22 +67,23 @@ class AD5293:
         # self._cs = digitalio.DigitalInOut(getattr(board, select))
         self._cs = digitalio.DigitalInOut(select)
         self._device = SPIDevice(
-            self._spi, self._cs, baudrate=5000000, polarity=1, phase=0
+            self._spi, self._cs, baudrate=100000, polarity=1, phase=0
         )
 
+        time.sleep(0.010)  # Power-on time (2ms min)
+
+        print("normal mode (not powered-down)")
+        self._send_data(0x2000)  # Normal mode (not powered-down)
+
+        # Reset the device and disable write-protect
+        self.reset()
+
+        print("set kwarg or default wiper value")
         self._wiper = wiper
         self._default_wiper = wiper
         self._normalized_wiper = self._wiper / 1023.0
         self._send_data(0x0400 | wiper)
 
-        self._power_down = False
-        self._reset = True
-
-        # Reset the device
-        self.reset()
-
-        # Enable register read-write
-        self._send_data(0x1802)
 
     @property
     def wiper(self):
@@ -140,8 +142,9 @@ class AD5293:
     def reset(self):
         """Reset the potentiometer. Refresh RDAC with mid-scale value. Disable
         write-protect."""
-        self._reset = True
+        print("reset and disable write-protect")
         self._send_data(0x1000)  # Reset
+        time.sleep(0.004)  # Reset delay (1.5ms min)
         self._send_data(0x1802)  # Disable write-protect
 
     def _send_data(self, data):
@@ -151,12 +154,16 @@ class AD5293:
         data &= 0xFFFF
         tx_msb = data >> 8
         tx_lsb = data & 0xFF
+        print(f"send data {data:#06x} {tx_msb:#04x} {tx_lsb:#04x}")
 
         with self._device:
             self._spi.write(bytes([tx_msb, tx_lsb]))
+        #time.sleep (0.010)  # write delay (shouldn't be needed)
 
     def _read_data(self):
         """Reads a 16-bit word from the SPI bus."""
+        #self._send_data(0x0000)  # NOP to allow read
+        #time.sleep(0.010)  # read enable delay (450ns min)
         with self._device:
             self._spi.readinto(self._BUFFER)
         return self._BUFFER
