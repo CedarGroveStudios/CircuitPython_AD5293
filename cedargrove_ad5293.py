@@ -84,7 +84,6 @@ class AD5293:
         self._normalized_wiper = self._wiper / 1023.0
         self._send_data(0x0400 | wiper)
 
-
     @property
     def wiper(self):
         """The raw value of the potentiometer's wiper."""
@@ -158,12 +157,12 @@ class AD5293:
 
         with self._device:
             self._spi.write(bytes([tx_msb, tx_lsb]))
-        #time.sleep (0.010)  # write delay (shouldn't be needed)
+        # time.sleep (0.010)  # write delay (shouldn't be needed)
 
     def _read_data(self):
         """Reads a 16-bit word from the SPI bus."""
-        #self._send_data(0x0000)  # NOP to allow read
-        #time.sleep(0.010)  # read enable delay (450ns min)
+        # self._send_data(0x0000)  # NOP to allow read
+        # time.sleep(0.010)  # read enable delay (450ns min)
         with self._device:
             self._spi.readinto(self._BUFFER)
         return self._BUFFER
