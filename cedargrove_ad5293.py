@@ -25,8 +25,6 @@ Implementation Notes
 """
 
 import time
-import board
-import busio
 import digitalio
 from adafruit_bus_device.spi_device import SPIDevice
 
@@ -34,17 +32,16 @@ __version__ = "0.0.0+auto.0"
 __repo__ = "https://github.com/CedarGroveStudios/Cedargrove_CircuitPython_AD5293.git"
 
 
-# pylint: disable=too-many-instance-attributes
 class AD5293:
     """Class representing the Cedar Grove AD5293, an SPI digital linear taper
     potentiometer.
 
-    The AD5293 Digital Potentiometer is an SPI, 100K-ohm device. The potentiometer
-    sports 1024 resistance steps and can work with a logic power source from 2.7v
-    to 5.5v. The potentiometer circuit can operate with dual analog supply voltages
-    from +/-9v to +/-16.5v. The pins act similarly to a passive resistive
-    potentiometer, but require that voltages placed on any of the three pins
-    not exceed the analog power supply voltages.
+    The AD5293 Digital Potentiometer is an SPI, 100K-ohm device. The
+    potentiometer sports 1024 resistance steps. The digital logic power
+    requires 2.7v to 5.5v. The potentiometer circuit operates with dual analog
+    supply voltages from +/-9v to +/-16.5v. The pins act similarly to a passive
+    resistive potentiometer, but require that voltages placed on any of the
+    three pins not exceed the analog power supply voltages.
 
     The Cedar Grove AD5293 custom breakout board provides power and signal
     connections for SPI and the potentiometer chip. The AD5293 is also
@@ -52,35 +49,35 @@ class AD5293:
 
     _BUFFER = bytearray(2)
 
-    # pylint: disable=too-many-arguments
-    def __init__(self, select=board.D6, wiper=0):
-        """Initialize SPI bus interconnect, derive chip select pin (to allow
-        multiple class instances), and create the SPIDevice instance. During
-        initialization, the potentiometer is reset and placed in the power-down
-        state.
-        :param board select: The AD5293 chip select pin designation. Defaults
-        to board.D6.
-        :param int wiper: The 10-bit potentiometer wiper integer value, range
-        from 0 to 1024. Defaults to 0."""
+    def __init__(self, spi, select, wiper=0):
+        """Initialize the AD5293 device instance. During initialization, the
+        potentiometer is reset, writing is enabled, and the wiper is set to the
+        specified initialization value.
+        :param busio.SPI spi: The board's busio.SPI definition. No default.
+        :param board select: The AD5293 chip select pin designation. No default.
+        :param int wiper: The initial 10-bit potentiometer wiper integer value,
+        range from 0 to 1023. Defaults to 0."""
 
-        self._spi = busio.SPI(board.SCK, MOSI=board.MOSI)  # Define SPI bus
-        # self._cs = digitalio.DigitalInOut(getattr(board, select))
-        self._cs = digitalio.DigitalInOut(select)
+        # Define the SPI bus connection
+        self._spi = spi
+        chip_sel = digitalio.DigitalInOut(select)
         self._device = SPIDevice(
-            self._spi, self._cs, baudrate=100000, polarity=1, phase=0
+            self._spi, chip_sel, baudrate=100000, polarity=1, phase=0
         )
 
-        time.sleep(0.010)  # Power-on time (2ms min)
+        # Power on delay (2ms minimum)
+        time.sleep(0.03)
 
-        print("normal mode (not powered-down)")
-        self._send_data(0x2000)  # Normal mode (not powered-down)
+        # Place device into normal mode (not powered-down)
+        self._send_data(0x2000)
 
         # Reset the device and disable write-protect
         self.reset()
 
-        print("set kwarg or default wiper value")
+        # Set initial wiper value
+        if wiper < 0 or wiper > 1023:
+            raise ValueError("Raw wiper value must be from 0 to 1023")
         self._wiper = wiper
-        self._default_wiper = wiper
         self._normalized_wiper = self._wiper / 1023.0
         self._send_data(0x0400 | wiper)
 
@@ -94,7 +91,7 @@ class AD5293:
         """Set the raw value of the potentiometer's wiper.
         :param new_wiper: The raw wiper value from 0 to 1023."""
         if new_wiper < 0 or new_wiper > 1023:
-            raise ValueError("raw wiper value must be from 0 to 1023")
+            raise ValueError("Raw wiper value must be from 0 to 1023")
         self._send_data(0x0400 | int(new_wiper))
         self._wiper = new_wiper
 
@@ -108,61 +105,31 @@ class AD5293:
         """Set the normalized value of the potentiometer's wiper.
         :param new_norm_wiper: The normalized wiper value from 0.0 to 1.0."""
         if new_norm_wiper < 0 or new_norm_wiper > 1.0:
-            raise ValueError("normalized wiper value must be from 0.0 to 1.0")
+            raise ValueError("Normalized wiper value must be from 0.0 to 1.0")
         self._send_data(0x0400 | int(new_norm_wiper * 1023.0))
         self._normalized_wiper = new_norm_wiper
 
-    @property
-    def default_wiper(self):
-        """The default value of the potentiometer's wiper."""
-        return self._default_wiper
-
-    @default_wiper.setter
-    def default_wiper(self, new_default_wiper):
-        """Set the default value of the potentiometer's wiper.
-        :param new_default_wiper: The raw wiper value from 0 to 1023."""
-        if new_default_wiper < 0 or new_default_wiper > 1023:
-            raise ValueError("default wiper value must be from 0 to 1023")
-        self._default_wiper = new_default_wiper
-
-    def set_default(self, new_default):
-        """A dummy helper to maintain UI compatibility digital
-        potentiometers with EEROM capability (dS3502). The AD5293's
-        wiper value will be set to 0 unless the default value is
-        set explicitly during or after class instantiation.
-        :param new_default: The raw wiper value from 0 to 1023."""
-        self._default_wiper = new_default
-
     def shutdown(self):
-        """Connects the W to the B terminal and opens the A terminal connection.
-        The contents of the wiper register are not changed."""
+        """Connects the W to the B terminal and opens the A terminal
+        connection. The contents of the wiper register are not changed."""
         self._send_data(0x2001)
 
     def reset(self):
         """Reset the potentiometer. Refresh RDAC with mid-scale value. Disable
         write-protect."""
-        print("reset and disable write-protect")
         self._send_data(0x1000)  # Reset
-        time.sleep(0.004)  # Reset delay (1.5ms min)
+        time.sleep(0.002)  # Reset delay (1.5ms min)
         self._send_data(0x1802)  # Disable write-protect
 
     def _send_data(self, data):
         """Send a 16-bit word through SPI bus as two 8-bit bytes.
-        :param int data: The 16-bit data value to write to the SPI device.
-        """
-        data &= 0xFFFF
-        tx_msb = data >> 8
-        tx_lsb = data & 0xFF
-        print(f"send data {data:#06x} {tx_msb:#04x} {tx_lsb:#04x}")
-
+        :param int data: The 16-bit data value to write to the SPI device."""
         with self._device:
-            self._spi.write(bytes([tx_msb, tx_lsb]))
-        # time.sleep (0.010)  # write delay (shouldn't be needed)
+            self._spi.write(bytes([data >> 8, data & 0xFF]))
 
     def _read_data(self):
-        """Reads a 16-bit word from the SPI bus."""
-        # self._send_data(0x0000)  # NOP to allow read
-        # time.sleep(0.010)  # read enable delay (450ns min)
+        """Read output from SDO pin. If used, the SDO pin will require an
+        external pull-up resistor."""
         with self._device:
             self._spi.readinto(self._BUFFER)
         return self._BUFFER
