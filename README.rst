@@ -17,16 +17,16 @@ Introduction
 
 A CircuitPython driver for the AD5293 digital potentiometer.
 
-The AD5293 Digital Potentiometer is an SPI, 100K-ohm device. The potentiometer
-sports 1024 resistance steps and can work with a logic power source from 2.7v
-to 5.5v. The potentiometer circuit can operate with analog supply voltages from
-+/-9v to +/-16.5v. The pins act similarly to a passive resistive potentiometer,
-but require that voltages placed on any of the three pins not exceed the analog
-power supply voltage or drop below ground potential.
+The AD5293 Digital Potentiometer is an SPI, 100K-ohm device. The
+potentiometer sports 1024 resistance steps. The digital logic power
+requires 2.7v to 5.5v. The potentiometer circuit operates with dual analog
+supply voltages from +/-9v to +/-16.5v. The pins act similarly to a passive
+resistive potentiometer, but require that voltages placed on any of the
+three pins not exceed the analog power supply voltages.
 
-The Cedar Grove AD5293 custom breakout board provides power and signal connections
-for SPI and the potentiometer chip. The AD5293 is also integrated with the
-AD9833-based Precision VCO Eurorack module.
+The Cedar Grove AD5293 custom breakout board provides power and signal
+connections for SPI and the potentiometer chip. The AD5293 is also
+used in the AD9833-based Cedar Grove Precision VCO Eurorack module.
 
 
 Dependencies
@@ -72,7 +72,7 @@ Usage Example
     import board
     import busio
     import cedargrove_ad5293
-    
+
     spi = busio.SPI(board.SCK, MOSI=board.MOSI, MISO=board.MISO)
 
     ad5293 = cedargrove_ad5245.AD5293(spi, select=board.D6)
