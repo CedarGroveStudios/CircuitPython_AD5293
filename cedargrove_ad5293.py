@@ -36,7 +36,7 @@ class AD5293:
     """Class representing the Cedar Grove AD5293, an SPI digital linear taper
     potentiometer.
 
-    The AD5293 Digital Potentiometer is an SPI, 100K-ohm device. The
+    The AD5293 Digital Potentiometer is a 10-bit, SPI, 100K-ohm device. The
     potentiometer sports 1024 resistance steps. The digital logic power
     requires 2.7v to 5.5v. The potentiometer circuit operates with dual analog
     supply voltages from +/-9v to +/-16.5v. The pins act similarly to a passive

@@ -5,7 +5,7 @@ import board
 import busio
 from cedargrove_ad5293 import AD5293
 
-spi = busio.SPI(board.SCK, MOSI=board.MOSI, MISO=board.MISO)  # Define SPI bus
+spi = busio.SPI(board.SCK, MOSI=board.MOSI)  # Define SPI bus
 
 ad5293 = AD5293(spi, select=board.D6)
 
