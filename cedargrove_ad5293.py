@@ -32,6 +32,7 @@ __version__ = "0.0.0+auto.0"
 __repo__ = "https://github.com/CedarGroveStudios/Cedargrove_CircuitPython_AD5293.git"
 
 
+# pylint: disable=too-many-instance-attributes
 class AD5293:
     """Class representing the Cedar Grove AD5293, an SPI digital linear taper
     potentiometer.
@@ -53,7 +54,7 @@ class AD5293:
         """Initialize the AD5293 device instance. During initialization, the
         potentiometer is reset, writing is enabled, and the wiper is set to the
         specified initialization value.
-        :param busio.SPI spi: The board's busio.SPI definition. No default.
+        :param busio.SPI spi: The board's `busio.SPI` definition. No default.
         :param board select: The AD5293 chip select pin designation. No default.
         :param int wiper: The initial 10-bit potentiometer wiper integer value,
         range from 0 to 1023. Defaults to 0."""
@@ -62,7 +63,7 @@ class AD5293:
         self._spi = spi
         chip_sel = digitalio.DigitalInOut(select)
         self._device = SPIDevice(
-            self._spi, chip_sel, baudrate=100000, polarity=1, phase=0
+            self._spi, chip_sel, baudrate=1000000, polarity=0, phase=1
         )
 
         # Power on delay (2ms minimum)
@@ -110,8 +111,8 @@ class AD5293:
         self._normalized_wiper = new_norm_wiper
 
     def shutdown(self):
-        """Connects the W to the B terminal and opens the A terminal
-        connection. The contents of the wiper register are not changed."""
+        """Connects the W pin to the B pin and opens the A pin. The content
+        of the wiper register is not changed."""
         self._send_data(0x2001)
 
     def reset(self):
@@ -126,10 +127,3 @@ class AD5293:
         :param int data: The 16-bit data value to write to the SPI device."""
         with self._device:
             self._spi.write(bytes([data >> 8, data & 0xFF]))
-
-    def _read_data(self):
-        """Read output from SDO pin. If used, the SDO pin will require an
-        external pull-up resistor."""
-        with self._device:
-            self._spi.readinto(self._BUFFER)
-        return self._BUFFER
