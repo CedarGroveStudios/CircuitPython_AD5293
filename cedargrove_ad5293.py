@@ -32,7 +32,6 @@ __version__ = "0.0.0+auto.0"
 __repo__ = "https://github.com/CedarGroveStudios/Cedargrove_CircuitPython_AD5293.git"
 
 
-# pylint: disable=too-many-instance-attributes
 class AD5293:
     """Class representing the Cedar Grove AD5293, an SPI digital linear taper
     potentiometer.
