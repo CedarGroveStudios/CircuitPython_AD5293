@@ -44,6 +44,9 @@ class AD5293:
     resistive potentiometer, but require that voltages placed on any of the
     three pins not exceed the analog power supply voltages.
 
+    The CircuitPython driver supports a single SPI potentiometer device per
+    instance. It will not work with daisy-chained devices.
+
     The Cedar Grove AD5293 custom breakout board provides power and signal
     connections for SPI and the potentiometer chip. The AD5293 is also
     used in the AD9833-based Cedar Grove Precision VCO Eurorack module."""
