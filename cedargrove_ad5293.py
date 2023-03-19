@@ -25,6 +25,7 @@ Implementation Notes
 """
 
 import time
+import board
 import digitalio
 from adafruit_bus_device.spi_device import SPIDevice
 
@@ -46,27 +47,20 @@ class AD5293:
     The CircuitPython driver supports a single SPI potentiometer device per
     instance. It will not work with daisy-chained devices.
 
-    The AD5293 requires a specific SPI configuration that may not work with
-    other SPI devices. The SCK signal polarity must be set for a base state of
-    0 with a falling edge trigger. The internal `SPIDevice` settings are:
-
-    `SPIDevice(spi, chip_sel, baudrate=1000000, polarity=0, phase=1)`
-
-    where `spi` is the `busio.SPI` definition and `chip_sel` is the `board`
-    chip select pin name. Baud rate settings above 1MHz are not recommended.
-
     The Cedar Grove AD5293 custom breakout board provides power and signal
     connections for SPI and the potentiometer chip. The AD5293 is also
     used in the AD9833-based Cedar Grove Precision VCO Eurorack module."""
 
     _BUFFER = bytearray(2)
 
-    def __init__(self, spi, select, wiper=0):
+    def __init__(self, spi=board.SPI(), select=board.D6, wiper=0):
         """Initialize the AD5293 device instance. During initialization, the
         potentiometer is reset, writing is enabled, and the wiper is set to the
         specified initialization value.
-        :param busio.SPI spi: The board's `busio.SPI` definition. No default.
-        :param board select: The AD5293 chip select pin designation. No default.
+        :param busio.SPI spi: The `busio.SPI` definition. Defaults to
+        `board.SPI()`.
+        :param board select: The chip select pin designation. Defaults to
+        `board.D6`.
         :param int wiper: The initial 10-bit potentiometer wiper integer value,
         range from 0 to 1023. Defaults to 0."""
 
