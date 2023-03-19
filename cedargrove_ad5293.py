@@ -46,6 +46,15 @@ class AD5293:
     The CircuitPython driver supports a single SPI potentiometer device per
     instance. It will not work with daisy-chained devices.
 
+    The AD5293 requires a specific SPI configuration that may not work with
+    other SPI devices. The SCK signal polarity must be set for a base state of
+    0 with a falling edge trigger. The internal `SPIDevice` settings are:
+
+    `SPIDevice(spi, chip_sel, baudrate=1000000, polarity=0, phase=1)`
+
+    where `spi` is the `busio.SPI` definition and `chip_sel` is the `board`
+    chip select pin name. Baud rate settings above 1MHz are not recommended.
+
     The Cedar Grove AD5293 custom breakout board provides power and signal
     connections for SPI and the potentiometer chip. The AD5293 is also
     used in the AD9833-based Cedar Grove Precision VCO Eurorack module."""
