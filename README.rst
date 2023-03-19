@@ -26,17 +26,6 @@ three pins not exceed the analog power supply voltage.
 The CircuitPython driver supports a single SPI potentiometer device per instance.
 It does not work with daisy-chained devices.
 
-The AD5293 requires a specific SPI configuration that may not work with other SPI
-devices. The SCK signal polarity must be set for a base state of 0 with a falling
-edge trigger. The internal ``SPIDevice`` settings are:
-
-.. code-block:: shell
-
-    SPIDevice(spi, chip_sel, baudrate=1000000, polarity=0, phase=1)
-
-where ``spi`` is the ``busio.SPI`` definition and ``chip_sel`` is the ``board``
-chip select pin name. Baudrate settings above 1MHz are not recommended.
-
 The Cedar Grove AD5293 custom breakout board provides power and signal
 connections for SPI and the potentiometer chip. The AD5293 is also
 used in the AD9833-based Cedar Grove Precision VCO Eurorack module.
@@ -86,9 +75,7 @@ Usage Example
     import busio
     import cedargrove_ad5293
 
-    spi = busio.SPI(board.SCK, MOSI=board.MOSI, MISO=board.MISO)
-
-    ad5293 = cedargrove_ad5245.AD5293(spi, select=board.D6)
+    ad5293 = cedargrove_ad5245.AD5293(spi=busio.SPI(), select=board.D6)
 
     ad5293.wiper = 1023
     print("Wiper set to %d"%ad5293.wiper)
