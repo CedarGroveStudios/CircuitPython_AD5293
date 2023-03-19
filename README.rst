@@ -28,14 +28,14 @@ It does not work with daisy-chained devices.
 
 The AD5293 requires a specific SPI configuration that may not work with other SPI
 devices. The SCK signal polarity must be set for a base state of 0 with a falling
-edge trigger. The `SPIDevice` settings are:
+edge trigger. The internal ``SPIDevice`` settings are:
 
 .. code-block:: shell
 
     SPIDevice(spi, chip_sel, baudrate=1000000, polarity=0, phase=1)
-    
-where ``spi`` is the ``busio.SPI`` definitions and ``chip_sel`` is the ``board``
-chip select pin name.
+
+where ``spi`` is the ``busio.SPI`` definition and ``chip_sel`` is the ``board``
+chip select pin name. Baudrate settings above 1MHz are not recommended.
 
 The Cedar Grove AD5293 custom breakout board provides power and signal
 connections for SPI and the potentiometer chip. The AD5293 is also
