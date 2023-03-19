@@ -75,7 +75,7 @@ Usage Example
     import busio
     import cedargrove_ad5293
 
-    ad5293 = cedargrove_ad5245.AD5293(spi=busio.SPI(), select=board.D6)
+    ad5293 = cedargrove_ad5245.AD5293(spi=busio.SPI(), select=board.D9)
 
     ad5293.wiper = 1023
     print("Wiper set to %d"%ad5293.wiper)
@@ -85,7 +85,7 @@ Usage Example
 
 Documentation
 =============
-`AD5293 CircuitPython Driver API Class Description <https://github.com/CedarGroveStudios/CircuitPython_AD5293/blob/main/media/pseudo_readthedocs_cedargrove_ad5293.pdf>`_
+`AD5293 CircuitPython Driver API Class Description <https://github.com/CedarGroveStudios/CircuitPython_AD5293/blob/main/media/pseudo_rtd_cedargrove_ad5293.pdf>`_
 
 `CedarGrove AD5293 Breakout OSH Park Project <https://oshpark.com/shared_projects/ADF8EdH9>`_
 
