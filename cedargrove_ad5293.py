@@ -51,16 +51,14 @@ class AD5293:
     connections for SPI and the potentiometer chip. The AD5293 is also
     used in the AD9833-based Cedar Grove Precision VCO Eurorack module."""
 
-    _BUFFER = bytearray(2)
-
-    def __init__(self, spi=board.SPI(), select=board.D6, wiper=0):
+    def __init__(self, spi=board.SPI(), select=board.D9, wiper=0):
         """Initialize the AD5293 device instance. During initialization, the
         potentiometer is reset, writing is enabled, and the wiper is set to the
         specified initialization value.
         :param busio.SPI spi: The `busio.SPI` definition. Defaults to
         `board.SPI()`.
         :param board select: The chip select pin designation. Defaults to
-        `board.D6`.
+        `board.D9`.
         :param int wiper: The initial 10-bit potentiometer wiper integer value,
         range from 0 to 1023. Defaults to 0."""
 
