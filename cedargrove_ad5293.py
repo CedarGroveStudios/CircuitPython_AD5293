@@ -35,21 +35,20 @@ __repo__ = "https://github.com/CedarGroveStudios/Cedargrove_CircuitPython_AD5293
 
 class AD5293:
     """Class representing the Cedar Grove AD5293, an SPI digital linear taper
-    potentiometer.
+    potentiometer breakout module.
 
-    The AD5293 Digital Potentiometer is a 10-bit, SPI, 100K-ohm device. The
-    potentiometer sports 1024 resistance steps. The digital logic power
-    requires 2.7v to 5.5v. The potentiometer circuit operates with dual analog
-    supply voltages from +/-9v to +/-16.5v. The pins act similarly to a passive
-    resistive potentiometer, but require that voltages placed on any of the
-    three pins not exceed the analog power supply voltages.
+    The AD5293 Digital Potentiometer is an SPI, 10-bit, 100K-ohm device. The
+    device operates with a digital logic power source of 2.7v to 5.5v and a
+    dual analog power source of +/-9v to +/-16.5v. The potentiometer pins act
+    similarly to a passive resistive potentiometer, but requires that voltages
+    placed on any of the three pins not exceed the analog power supply voltage.
 
     The CircuitPython driver supports a single SPI potentiometer device per
-    instance. It will not work with daisy-chained devices.
+    instance. It does not work with daisy-chained devices.
 
     The Cedar Grove AD5293 custom breakout board provides power and signal
-    connections for SPI and the potentiometer chip. The AD5293 is also
-    used in the AD9833-based Cedar Grove Precision VCO Eurorack module."""
+    connections for SPI and the potentiometer chip. The AD5293 is also used in
+    the AD9833-based Cedar Grove Precision VCO Eurorack module."""
 
     def __init__(self, spi=board.SPI(), select=board.D9, wiper=0):
         """Initialize the AD5293 device instance. During initialization, the
