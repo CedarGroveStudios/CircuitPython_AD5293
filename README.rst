@@ -72,10 +72,9 @@ Usage Example
 .. code-block:: python
 
     import board
-    import busio
     import cedargrove_ad5293
 
-    ad5293 = cedargrove_ad5245.AD5293(spi=busio.SPI(), select=board.D9)
+    ad5293 = cedargrove_ad5245.AD5293(spi=board.SPI(), select=board.D9)
 
     ad5293.wiper = 1023
     print("Wiper set to %d"%ad5293.wiper)
