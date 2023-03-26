@@ -86,7 +86,7 @@ Documentation
 =============
 `AD5293 CircuitPython Driver API Class Description <https://github.com/CedarGroveStudios/CircuitPython_AD5293/blob/main/media/pseudo_rtd_cedargrove_ad5293.pdf>`_
 
-`CedarGrove AD5293 Breakout OSH Park Project <https://oshpark.com/shared_projects/ADF8EdH9>`_
+`CedarGrove AD5293 Breakout OSH Park Project <https://oshpark.com/shared_projects/JgsYr1kv>`_
 
 `CedarGrove AD5293 Breakout PCB Repository <https://github.com/CedarGroveStudios/PCB_AD5293_Digital_Potentiometer>`_
 
