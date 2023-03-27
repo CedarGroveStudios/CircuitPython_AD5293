@@ -24,7 +24,10 @@ resistive potentiometer, but requires that voltages placed on any of the
 three pins not exceed the analog power supply voltage.
 
 The CircuitPython driver supports a single SPI potentiometer device per instance.
-It does not work with daisy-chained devices. The SDO pin is set to high-impedance.
+Connecting the SDO pin to the SPI host input pin is not required nor recommended
+since the SDO pin could interfere with other SPI-connected devices.
+
+This driver does not work with daisy-chained devices.
 
 The Cedar Grove AD5293 custom breakout board provides power and signal
 connections for SPI and the potentiometer chip. The AD5293 is also
