@@ -24,7 +24,8 @@ resistive potentiometer, but requires that voltages placed on any of the
 three pins not exceed the analog power supply voltage.
 
 The CircuitPython driver supports a single SPI potentiometer device per instance.
-Connecting the SDO pin to the SPI host input pin is not required nor recommended.
+Connecting the SDO pin to the SPI host input pin is not required nor recommended
+since the SDO pin could interfere with other SPI-connected devices.
 
 This driver does not work with daisy-chained devices.
 
